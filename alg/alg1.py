@@ -1,7 +1,3 @@
-# for error not import 
-import sys
-sys.path.append("./")
-
 
 from entity.sensor import Sensor
 import config.config as cf

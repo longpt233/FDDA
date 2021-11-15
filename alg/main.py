@@ -10,12 +10,12 @@ from alg.alg1 import initMove
 
 if __name__ == "__main__": 
 
-    listSensor = getGenRandListSensor()
+    listSensor_GLOBAL = getGenRandListSensor()
 
-    Visualze3DWithSensor(listSensor)
+    Visualze3DWithSensor(listSensor_GLOBAL)
 
-    for sensor in listSensor:
+    for sensor in listSensor_GLOBAL:
         sensor = initMove(sensor)
 
-    Visualze3DWithSensor(listSensor)
+    Visualze3DWithSensor(listSensor_GLOBAL)
     
