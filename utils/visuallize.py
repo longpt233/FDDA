@@ -1,3 +1,9 @@
+import sys
+sys.path.append("./")
+
+from entity.corr import Corr3D
+
+
 import numpy as np
 import matplotlib.pyplot as plt 
 
@@ -18,3 +24,21 @@ def Visualze2D(x,y):
 
     plt.scatter(x, y)
     plt.show()
+
+
+def Visualze3DWithSensor(listSensor):
+    x= []
+    y=[]
+    z=[]
+    for sensor in listSensor:
+
+        corr3d = sensor.corr3D
+        x_coor = corr3d.x
+        y_coor = corr3d.y
+        z_coor = corr3d.z
+
+        x.append(x_coor)
+        y.append(y_coor)
+        z.append(z_coor)
+    
+    Visualze3D(x, y, z)
