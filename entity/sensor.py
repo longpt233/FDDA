@@ -1,17 +1,13 @@
 import sys
 sys.path.append("./")
 
-from entity.corr import Corr3D
-
 
 class Sensor:
 
     isFixed = False
     
-    def __init__(self, corr3D):
-        self.corr3D = corr3D
+    def __init__(self, point_3d):
+        self.point_3d = point_3d
 
-    def MoveTo(self, corr3D_new):
-        self.corr3D = corr3D_new
-
-    pass
+    def MoveTo(self, point_3d_new):
+        self.point_3d = point_3d_new
