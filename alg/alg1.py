@@ -1,67 +1,27 @@
-import math
-
+import numpy as np
 from entity.coordinate import Coordinate3D, Coordinate2D
 import config.config as cf
 from utils.visuallize import visualize2D
-
-SQRT3 = math.sqrt(3)
-
-
-# return num of colum
-def f_c(w, r):
-    return math.ceil((2 * (w - r)) / (3 * r)) + 1
-
-
-# return number of rows of odd number colum
-def f_o(h, r):
-    return math.ceil(h / (r * SQRT3))
-
-
-# return number of rows of even number colum
-def f_e(h, r):
-    numerator = h - (r * SQRT3) / 2
-    denominator = r * SQRT3
-    return math.ceil(numerator / denominator) + 1
-
-
-# y coordnate of each column where i denotes the ith column
-def f_y(w, r, i):
-    if i == 0:
-        return r / 2
-    else:
-        compare_with_w = r / 2 + (f_c(w, r) - 1) * r / 2
-        if compare_with_w < w:
-            return r / 2 + i * 3 * r / 2
-        else:
-            return w
-
-
-def f_z(h, r, j, isOld):
-    if isOld:
-        return h - (r * SQRT3) / 2 - j * r * SQRT3
-    else:
-        return h - j * r * SQRT3
+from cal_funcs import f_c, f_e, f_o, f_y, f_z
 
 
 def get_hexagon_center_points(w, h, r):
     list_hcp = []
 
     num_col = f_c(w, r)
-
-    num_old_row = f_o(h, r)
+    num_odd_row = f_o(h, r)
     num_even_row = f_e(h, r)
 
     for col_index in range(num_col):
         y = f_y(w, r, col_index)
 
         if col_index % 2 == 1:
-            for row_index in range(num_old_row):
-                z = f_z(h, r, row_index, isOld=True)
+            for row_index in range(num_odd_row):
+                z = f_z(h, r, row_index, is_odd=True)
                 list_hcp.append(Coordinate2D(y, z))
-
         else:
             for row_index in range(num_even_row):
-                z = f_z(h, r, row_index, isOld=False)
+                z = f_z(h, r, row_index, is_odd=False)
                 list_hcp.append(Coordinate2D(y, z))
 
     return list_hcp
@@ -69,19 +29,11 @@ def get_hexagon_center_points(w, h, r):
 
 def show_hcp():
     list_hcp = get_hexagon_center_points(cf.WIDTH, cf.HEIGHT, cf.RADIUS)
-    x = []
-    y = []
-    for i in list_hcp:
-        x.append(i.x)
-        y.append(i.y)
-    visualize2D(x, y)
+    visualize2D(list_hcp)
 
 
 def get_distance_2D(coor2D_a, coor2D_b):
-    tmp1 = coor2D_a.x - coor2D_b.x
-    tmp2 = coor2D_a.y - coor2D_b.y
-    tmp3 = tmp1 * tmp1 + tmp2 * tmp2
-    return math.sqrt(tmp3)
+    return np.linalg.norm((coor2D_a.x - coor2D_b.x, coor2D_a.y - coor2D_b.y))
 
 
 def init_move(sensor):
@@ -90,17 +42,17 @@ def init_move(sensor):
     x_sensor = sensor.coor3D.x
     y_sensor = sensor.coor3D.y
     z_sensor = sensor.coor3D.z
-    corr2d_sensor = Coordinate2D(y_sensor, z_sensor)
+    coor2d_sensor = Coordinate2D(y_sensor, z_sensor)
 
     # Coor2D list
     list_hcp = get_hexagon_center_points(cf.WIDTH, cf.HEIGHT, cf.RADIUS)
 
     hexagonnNum = len(list_hcp)
-    dmin = 2 * cf.LENGTH
+    d_min = 2 * cf.LENGTH
     for hcp in list_hcp:
-        dtmp = get_distance_2D(hcp, corr2d_sensor)
-        if dtmp < dmin:
-            dmin = dtmp
+        d_tmp = get_distance_2D(hcp, coor2d_sensor)
+        if d_tmp < d_min:
+            d_min = d_tmp
             p_target = hcp
 
     sensor.move_to(Coordinate3D(x_sensor, p_target.x, p_target.y))

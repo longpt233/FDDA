@@ -6,26 +6,26 @@ from alg2 import VerMove
 sys.path.append("./")
 
 
-def GetTimeInSecond():
+def get_time_in_second():
     t = time.time()
     return int(t * 1000000)
 
 
 # Confirm the Closest
-def BroadcastCC():
+def broadcast_cc():
     raise Exception("method not implement")
 
 
 # CC - ack
-def ReceiveCCackMess():
+def receive_CCack_mess():
     raise Exception("method not implement")
 
 
-def ParallelMove(sensor):
-    t_start = GetTimeInSecond()
-    BroadcastCC()
-    while GetTimeInSecond() - t_start < cf.T_CC:
-        if ReceiveCCackMess():
+def parallel_move(sensor):
+    t_start = get_time_in_second()
+    broadcast_cc()
+    while get_time_in_second() - t_start < cf.T_CC:
+        if receive_CCack_mess():
             VerMove(sensor)
             return
         time.sleep(cf.T_SLEEP)
