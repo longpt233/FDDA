@@ -17,4 +17,4 @@ if __name__ == "__main__":
     
     update_closer_sensors(list_sensor_global)
     
-    visualize3D_with_sensor(list_sensor_global)
+    visualize3D_with_sensor(list_sensor_global, 'Algorithm 1: Initial Movement')

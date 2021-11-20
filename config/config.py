@@ -7,7 +7,7 @@ LENGTH = 100
 RADIUS = 10         # the distance between the centers of the 2 sensors so that it creates a barrier
 NUM_OF_SENSOR = 350
 VELOCITY = 1
-GAMMA = 15          # The distance between the centers of the 2 sensors so that it can sense each other
+GAMMA = 15          # the distance between the centers of the 2 sensors so that it can sense each other
 
 # Time constraints
 MINIMUM_TIME = 1    # seconds
