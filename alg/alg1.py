@@ -9,25 +9,19 @@ SQRT3 = math.sqrt(3)
 
 # return num of colum
 def f_c(w, r):
-    tmp = (2 * (w - r)) / (3 * r)
-    seil_tmp = int(math.ceil(tmp))
-    return seil_tmp + 1
+    return math.ceil((2 * (w - r)) / (3 * r)) + 1
 
 
 # return number of rows of odd number colum
 def f_o(h, r):
-    tmp = h / (r * SQRT3)
-    seil_tmp = int(math.ceil(tmp))
-    return seil_tmp
+    return math.ceil(h / (r * SQRT3))
 
 
 # return number of rows of even number colum
 def f_e(h, r):
     numerator = h - (r * SQRT3) / 2
     denominator = r * SQRT3
-    tmp = numerator / denominator
-    seil_tmp = int(math.ceil(tmp))
-    return seil_tmp + 1
+    return math.ceil(numerator / denominator) + 1
 
 
 # y coordnate of each column where i denotes the ith column
@@ -58,17 +52,17 @@ def get_hexagon_center_points(w, h, r):
     num_even_row = f_e(h, r)
 
     for col_index in range(num_col):
-        f_y = f_y(w, r, col_index)
+        y = f_y(w, r, col_index)
 
         if col_index % 2 == 1:
             for row_index in range(num_old_row):
-                f_z = f_z(h, r, row_index, isOld=True)
-                list_hcp.append(Coordinate2D(f_y, f_z))
+                z = f_z(h, r, row_index, isOld=True)
+                list_hcp.append(Coordinate2D(y, z))
 
         else:
             for row_index in range(num_even_row):
-                f_z = f_z(h, r, row_index, isOld=False)
-                list_hcp.append(Coordinate2D(f_y, f_z))
+                z = f_z(h, r, row_index, isOld=False)
+                list_hcp.append(Coordinate2D(y, z))
 
     return list_hcp
 
@@ -83,9 +77,9 @@ def show_hcp():
     visualize2D(x, y)
 
 
-def getDistance2D(corr2D_a, corr2D_b):
-    tmp1 = corr2D_a.x - corr2D_b.x
-    tmp2 = corr2D_a.y - corr2D_b.y
+def get_distance_2D(coor2D_a, coor2D_b):
+    tmp1 = coor2D_a.x - coor2D_b.x
+    tmp2 = coor2D_a.y - coor2D_b.y
     tmp3 = tmp1 * tmp1 + tmp2 * tmp2
     return math.sqrt(tmp3)
 
@@ -104,7 +98,7 @@ def init_move(sensor):
     hexagonnNum = len(list_hcp)
     dmin = 2 * cf.LENGTH
     for hcp in list_hcp:
-        dtmp = getDistance2D(hcp, corr2d_sensor)
+        dtmp = get_distance_2D(hcp, corr2d_sensor)
         if dtmp < dmin:
             dmin = dtmp
             p_target = hcp
