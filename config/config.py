@@ -1,17 +1,16 @@
-# for region 
+# For region
 WIDTH = 100
-HEIGHT = 100 
+HEIGHT = 100
 LENGTH = 100
 
-# for sensor
-RADIUS = 10 # khoảng cách tâm giữa 2 sensor để nó tạo được rào chắn
+# For sensors
+RADIUS = 10         # the distance between the centers of the 2 sensors so that it creates a barrier
 NUM_OF_SENSOR = 350
 VELOCITY = 1
-GAMMA = 15 # khoảng cách tâm giữa 2 sensor để nó cảm nhận được nhau 
+GAMMA = 15          # The distance between the centers of the 2 sensors so that it can sense each other
 
-
-# time config 
-MINIMUM_TIME = 1 # second
-T_CC = None      # time out of CC mess 
-T_SLEEP = None   # in alg 3,4
-# T_MD                # in alg3 when si is fixed sensor
+# Time constraints
+MINIMUM_TIME = 1    # seconds
+T_CC = None         # time out of CC messages
+T_SLEEP = None      # in algorithm 3,4
+# T_MD              # in algorithm 3 when s_i is fixed sensor

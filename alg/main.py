@@ -1,17 +1,20 @@
 import sys
-from utils.gendata import getGenRandListSensor
-from utils.visuallize import Visualize3DWithSensor
-from alg.alg1 import initMove
+sys.path.append(".")
 
-sys.path.append("./")
+from alg.update import update_closer_sensors
+from alg.alg1 import init_move
+from utils.gen_data import gen_list_sensor
+from utils.visuallize import visualize3D_with_sensor
+
 
 if __name__ == "__main__":
+    list_sensor_global = gen_list_sensor()
 
-    listSensor_GLOBAL = getGenRandListSensor()
+    visualize3D_with_sensor(list_sensor_global)
 
-    Visualize3DWithSensor(listSensor_GLOBAL)
-
-    for sensor in listSensor_GLOBAL:
-        sensor = initMove(sensor)
-
-    Visualize3DWithSensor(listSensor_GLOBAL)
+    for sensor in list_sensor_global:
+        sensor = init_move(sensor)
+    
+    update_closer_sensors(list_sensor_global)
+    
+    visualize3D_with_sensor(list_sensor_global)

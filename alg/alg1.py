@@ -1,29 +1,28 @@
-from entity.sensor import Sensor
-import config.config as cf
-from entity.coordinate import Point3D
-from entity.coordinate import Point2D
 import math
-from utils.visuallize import *
+
+from entity.coordinate import Coordinate3D, Coordinate2D
+import config.config as cf
+from utils.visuallize import visualize2D
 
 SQRT3 = math.sqrt(3)
 
 
 # return num of colum
-def Fc(w, r):
+def f_c(w, r):
     tmp = (2 * (w - r)) / (3 * r)
     seil_tmp = int(math.ceil(tmp))
     return seil_tmp + 1
 
 
 # return number of rows of odd number colum
-def Fo(h, r):
+def f_o(h, r):
     tmp = h / (r * SQRT3)
     seil_tmp = int(math.ceil(tmp))
     return seil_tmp
 
 
 # return number of rows of even number colum
-def Fe(h, r):
+def f_e(h, r):
     numerator = h - (r * SQRT3) / 2
     denominator = r * SQRT3
     tmp = numerator / denominator
@@ -31,65 +30,57 @@ def Fe(h, r):
     return seil_tmp + 1
 
 
-# y coordnate of each column  where i denotes the ith column
-def Fy(w, r, i):
-    # print(w," ",r," ",i)
-
+# y coordnate of each column where i denotes the ith column
+def f_y(w, r, i):
     if i == 0:
         return r / 2
     else:
-        compare_with_w = r / 2 + (Fc(w, r) - 1) * r / 2
+        compare_with_w = r / 2 + (f_c(w, r) - 1) * r / 2
         if compare_with_w < w:
             return r / 2 + i * 3 * r / 2
         else:
             return w
 
-    raise Exception("method not match any case !")
 
-
-# z coordnate
-def Fz(h, r, j, isOld):
+def f_z(h, r, j, isOld):
     if isOld:
         return h - (r * SQRT3) / 2 - j * r * SQRT3
     else:
         return h - j * r * SQRT3
 
-    raise Exception("method not match any case !")
 
+def get_hexagon_center_points(w, h, r):
+    list_hcp = []
 
-def getHexagonCenterPoints(w, h, r):
-    listHcp = []
+    num_col = f_c(w, r)
 
-    num_of_col = Fc(w, r)
+    num_old_row = f_o(h, r)
+    num_even_row = f_e(h, r)
 
-    num_of_old_row = Fo(h, r)
-    num_of_even_row = Fe(h, r)
+    for col_index in range(num_col):
+        f_y = f_y(w, r, col_index)
 
-    for col_index in range(num_of_col):
-        fy = Fy(w, r, col_index)
-
-        if col_index % 2 == 1:  # la so chan -> old
-            for row_index in range(num_of_old_row):
-                fz = Fz(h, r, row_index, isOld=True)
-                listHcp.append(Point2D(fy, fz))
+        if col_index % 2 == 1:
+            for row_index in range(num_old_row):
+                f_z = f_z(h, r, row_index, isOld=True)
+                list_hcp.append(Coordinate2D(f_y, f_z))
 
         else:
-            for row_index in range(num_of_even_row):
-                fz = Fz(h, r, row_index, isOld=False)
-                listHcp.append(Point2D(fy, fz))
+            for row_index in range(num_even_row):
+                f_z = f_z(h, r, row_index, isOld=False)
+                list_hcp.append(Coordinate2D(f_y, f_z))
 
-    return listHcp
+    return list_hcp
 
 
-def ShowHCP():
-    listHcp = getHexagonCenterPoints(cf.WIDTH, cf.HEIGHT, cf.RADIUS)
-    # print(listHcp.__len__())
+def show_hcp():
+    list_hcp = get_hexagon_center_points(cf.WIDTH, cf.HEIGHT, cf.RADIUS)
     x = []
     y = []
-    for i in listHcp:
+    for i in list_hcp:
         x.append(i.x)
         y.append(i.y)
-    Visualize2D(x, y)
+    visualize2D(x, y)
 
 
 def getDistance2D(corr2D_a, corr2D_b):
@@ -99,31 +90,31 @@ def getDistance2D(corr2D_a, corr2D_b):
     return math.sqrt(tmp3)
 
 
-def initMove(sensor):
+def init_move(sensor):
     # get corr2D of sensor
     global p_target
-    x_sensor = sensor.corr3D.x
-    y_sensor = sensor.corr3D.y
-    z_sensor = sensor.corr3D.z
-    corr2d_sensor = Point2D(y_sensor, z_sensor)
+    x_sensor = sensor.coor3D.x
+    y_sensor = sensor.coor3D.y
+    z_sensor = sensor.coor3D.z
+    corr2d_sensor = Coordinate2D(y_sensor, z_sensor)
 
-    # Coor2D list 
-    listHcp = getHexagonCenterPoints(cf.WIDTH, cf.HEIGHT, cf.RADIUS)
+    # Coor2D list
+    list_hcp = get_hexagon_center_points(cf.WIDTH, cf.HEIGHT, cf.RADIUS)
 
-    hexagonnNum = len(listHcp)
+    hexagonnNum = len(list_hcp)
     dmin = 2 * cf.LENGTH
-    for hcp in listHcp:
+    for hcp in list_hcp:
         dtmp = getDistance2D(hcp, corr2d_sensor)
         if dtmp < dmin:
             dmin = dtmp
             p_target = hcp
 
-    sensor.MoveTo(Point3D(x_sensor, p_target.x, p_target.y))
+    sensor.move_to(Coordinate3D(x_sensor, p_target.x, p_target.y))
 
-    # call alg2 here 
+    # call alg2 here
 
     return sensor
 
 
 if __name__ == "__main__":
-    ShowHCP()
+    show_hcp()

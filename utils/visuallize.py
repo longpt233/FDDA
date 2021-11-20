@@ -1,41 +1,16 @@
-import sys
-from entity.coordinate import Point3D
-import numpy as np
 import matplotlib.pyplot as plt
 
-sys.path.append("./")
+
+def visualize2D(list_coor):
+    list_x, list_y = tuple(zip(*list_coor))
+    plt.scatter(list_x, list_y)
+    plt.show()
 
 
-# x,y,z í numpy array 
-def Visualize3D(x, y, z):
-    fig = plt.figure()
-
-    # syntax for 3-D projection
+def visualize3D_with_sensor(list_sensor):
+    list_coor = list(map(lambda sensor: sensor.coor3D.to_list(), list_sensor))
+    list_x, list_y, list_z = tuple(zip(*list_coor))
     ax = plt.axes(projection='3d')
-
-    # plotting
-    ax.scatter(x, y, z, 'green')
+    ax.scatter(list_x, list_y, list_z, 'green')
     ax.set_title('3D visualize')
     plt.show()
-
-
-def Visualize2D(x, y):
-    plt.scatter(x, y)
-    plt.show()
-
-
-def Visualize3DWithSensor(listSensor):
-    x = []
-    y = []
-    z = []
-    for sensor in listSensor:
-        point_3d = sensor.point_3d
-        x_coor = point_3d.x
-        y_coor = point_3d.y
-        z_coor = point_3d.z
-
-        x.append(x_coor)
-        y.append(y_coor)
-        z.append(z_coor)
-
-    Visualize3D(x, y, z)

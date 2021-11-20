@@ -1,57 +1,32 @@
-import sys
 import config.config as cf
-from entity.coordinate import Point3D
-import utils.gendata as gd
+from entity.coordinate import Coordinate3D
+from utils.gen_data import gen_list_sensor
 
-sys.path.append("./")
 
 # all sensor in one center line or all sensor in space
-globalListSensor = gd.getGenRandListSensor()
+list_sensor = gen_list_sensor()
 
 
-# thực tế thì nó sẽ quảng bá để biết
-def getC(sensor):
-    listSensor = []
-    # for all sensor 
-
-    x_sensor = sensor.corr3D.x
-    y_sensor = sensor.corr3D.y
-    z_sensor = sensor.corr3D.z
-
-    for sensor_iter in globalListSensor:
-        x_sensor_tmp = sensor_iter.corr3D.x
-        y_sensor_tmp = sensor_iter.corr3D.y
-        z_sensor_tmp = sensor_iter.corr3D.z
-
-        if y_sensor == y_sensor_tmp and z_sensor == z_sensor_tmp:
-            if sensor_iter.corr3D.x < sensor.corr3D.x:
-                listSensor.append(sensor_iter)
-
-    return listSensor
-
-
-def containFixSensor(listSensor):
-    for sensor in listSensor:
-        if sensor.isFixed:
+def contain_fix_sensor(list_sensor):
+    for sensor in list_sensor:
+        if sensor.is_fixed:
             return True
-
     return False
 
 
-def VerticalMove(sensor):
-    listSensor = getC(sensor)
+def vertical_move(sensor):
+    list_sensor = sensor.closer_sensors
 
-    x_sensor = sensor.corr3D.x
-    y_sensor = sensor.corr3D.y
-    z_sensor = sensor.corr3D.z
+    x_sensor = sensor.coor3D.x
+    y_sensor = sensor.coor3D.y
+    z_sensor = sensor.coor3D.z
 
-    while len(listSensor) == 0 and sensor.corr3D.x != 0:
-        # move theo x voi van toc 
-        sensor.MoveTo(Point3D(x_sensor - cf.VELOCITY * cf.MINIMUM_TIME, y_sensor, z_sensor))
-        listSensor = getC(sensor)
+    while len(list_sensor) == 0 and sensor.coor3D.x != 0:
+        sensor.move_to(Coordinate3D(x_sensor - cf.VELOCITY * cf.MINIMUM_TIME, y_sensor, z_sensor))
+        list_sensor = sensor.c
 
-    if len(listSensor) > 0:
-        if containFixSensor(listSensor):
+    if len(list_sensor) > 0:
+        if contain_fix_sensor(list_sensor):
             pass
 
         else:

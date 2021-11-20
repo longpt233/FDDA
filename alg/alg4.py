@@ -31,7 +31,7 @@ def ParallelMove(sensor):
         time.sleep(cf.T_SLEEP)
 
     vp = None  # vp = VP(si)[0]
-    sensor.MoveTo()
+    sensor.move_to()
 
     VerMove(sensor)
     return
