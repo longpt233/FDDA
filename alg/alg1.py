@@ -1,3 +1,5 @@
+import sys 
+sys.path.append('.')
 import numpy as np
 from entity.coordinate import Coordinate3D, Coordinate2D
 import config.config as cf

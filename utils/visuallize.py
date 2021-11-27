@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 
 
 def visualize2D(list_coor, title=''):
+    list_coor = list(map(lambda coor: coor.to_list(), list_coor))
     list_x, list_y = tuple(zip(*list_coor))
     plt.scatter(list_x, list_y)
     plt.show()

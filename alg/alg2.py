@@ -15,14 +15,13 @@ def contain_fix_sensor(list_sensor):
 
 
 def vertical_move(sensor):
-    list_sensor = sensor.closer_sensors
-
     x_sensor = sensor.coor3D.x
     y_sensor = sensor.coor3D.y
     z_sensor = sensor.coor3D.z
 
-    while len(list_sensor) == 0 and sensor.coor3D.x != 0:
-        sensor.move_to(Coordinate3D(x_sensor - cf.VELOCITY * cf.MINIMUM_TIME, y_sensor, z_sensor))
+    while len(sensor.closer_sensors) == 0 and sensor.coor3D.x != 0:
+        sensor.move_to(Coordinate3D(x_sensor - cf.VELOCITY *
+                       cf.MINIMUM_TIME, y_sensor, z_sensor))
         list_sensor = sensor.c
 
     if len(list_sensor) > 0:
@@ -30,10 +29,10 @@ def vertical_move(sensor):
             pass
 
         else:
-            # keep 
+            # keep
             pass
     # if VP(sensor)
 
-    # end if 
+    # end if
 
     # call alg3
