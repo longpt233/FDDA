@@ -12,5 +12,3 @@ def vacant_position_processing(sensor_si):
         receive_mess()
         if (sensor_si.VP.empty()):
             sensor_si.VP.put()
-
-
