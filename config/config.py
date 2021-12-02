@@ -1,4 +1,3 @@
-# For region
 WIDTH = 100
 HEIGHT = 100
 LENGTH = 100
@@ -14,3 +13,4 @@ MINIMUM_TIME = 1    # seconds
 T_CC = None         # time out of CC messages
 T_SLEEP = None      # in algorithm 3,4
 # T_MD              # in algorithm 3 when s_i is fixed sensor
+T_RCV = 10          # mess receiving time in alg3

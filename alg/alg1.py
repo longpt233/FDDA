@@ -1,4 +1,5 @@
-import sys 
+import sys
+from matplotlib.pyplot import get 
 sys.path.append('.')
 import numpy as np
 from entity.coordinate import Coordinate3D, Coordinate2D
@@ -65,4 +66,6 @@ def init_move(sensor):
 
 
 if __name__ == "__main__":
-    show_hcp()
+    # show_hcp()
+    a = get_hexagon_center_points(cf.WIDTH, cf.HEIGHT, cf.RADIUS)
+    print(a)

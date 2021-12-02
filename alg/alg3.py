@@ -1,27 +1,16 @@
 import sys
+from alg.broadcast_n_rcv import broadcast_po_mess, broadcast_vp_mess, receive_mess
 import config.config as cf
 import time
-
-sys.path.append("./")
-T_RCV = None
+import os
 
 
-def GetTimeInSecond():
-    t = time.time()
-    return int(t * 1000000)
+def vacant_position_processing(sensor_si):
+    t_start = time.time()
+    while(time.time() - t_start < cf.T_RCV):
+        broadcast_vp_mess()
+        receive_mess()
+        if (sensor_si.VP.empty()):
+            sensor_si.VP.put()
 
 
-def BroadcastVP():
-    raise Exception("method not implement")
-
-
-def ReceivePOAndVPMess():
-    raise Exception("method not implement")
-
-
-def VacantProcess(sensor):
-    t_start = GetTimeInSecond()
-
-    while GetTimeInSecond() - t_start < T_RCV:
-        BroadcastVP()
-        ReceivePOAndVPMess()
