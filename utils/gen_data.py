@@ -1,13 +1,14 @@
 from entity.sensor import Sensor
 from entity.coordinate import Coordinate3D
 import config.config as cf
-from numpy.random import uniform
+from numpy.random import randint
+
 
 
 def gen_list_sensor():
     list_x, list_y, list_z = tuple(
         map(
-            lambda dimension: uniform(1, dimension, size=cf.NUM_OF_SENSOR),
+            lambda dimension: randint(1, dimension, size=cf.NUM_OF_SENSOR),
             [cf.LENGTH, cf.WIDTH, cf.HEIGHT],
         )
     )

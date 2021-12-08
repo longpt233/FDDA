@@ -8,6 +8,8 @@ from utils.gen_data import gen_list_sensor
 from queue import PriorityQueue
 from alg.broadcast_n_rcv import broadcast_po_mess
 from alg.alg3 import vacant_position_processing
+
+
 # all sensor in one center line or all sensor in space
 list_ini_sensors = gen_list_sensor()
 
@@ -40,33 +42,54 @@ def update_closer_sensors(same_centerline_sensors, sensor_si):
     '''
     C_si = []
     for sensor in same_centerline_sensors:
-        if (abs(sensor_si.coor3D.x - sensor.coor3D.x) < cf.GAMMA and sensor_si.coor3D.x >= sensor.coor3D.x):
+        if (abs(sensor_si.coor3D.x - sensor.coor3D.x) <=  cf.GAMMA and sensor_si.coor3D.x >= sensor.coor3D.x):
             C_si.append(sensor)
     return C_si
 
 
-def vertical_move(sensor_si):
+def vertical_move(sensor_si, list_ini_sensors):
+
     x_sensor = sensor_si.coor3D.x
     y_sensor = sensor_si.coor3D.y
     z_sensor = sensor_si.coor3D.z
-    list_same_centerline_sensors = get_same_centerline_sensors(list_ini_sensors, sensor_si)
-    list_closer_sensors = update_closer_sensors(list_same_centerline_sensors, sensor_si)
-    while len(list_closer_sensors) == 0 and sensor_si.coor3D.x != 0:
-        sensor_si.move_to(Coordinate3D(x_sensor - cf.VELOCITY, y_sensor, z_sensor))
-        update_closer_sensors(list_same_centerline_sensors, sensor_si)
 
+    # lấy tất cả các sensor cùng senterlize 
+    list_same_centerline_sensors = get_same_centerline_sensors(list_ini_sensors, sensor_si)
+
+    # lọc ra những sensor gàn base hơn so với nó, tính theo GAMMA 
+    list_closer_sensors = update_closer_sensors(list_same_centerline_sensors, sensor_si)
+
+    # sensor đó sẽ chuyển động đến khi gặp sensor khác hoặc base layer thì thôi
+    while len(list_closer_sensors) == 0 and sensor_si.coor3D.x != 0:
+        sensor_si.move_to(Coordinate3D(x_sensor - cf.VELOCITY, y_sensor, z_sensor))      # chuyển động với một khoảng bằng vận tốc (lấy là 1 - đơn vị )
+        list_closer_sensors = update_closer_sensors(list_same_centerline_sensors, sensor_si)
+        # có thể đặt biến tính time chuyển động ở đây 
+
+    # nếu nó gặp một sensor trước nó 
+    # vì mình chỉ nhảy một lần 1 đơn vị, VÀ init theo trục x là số nguyên (bội của 1 )
+    # hàm closer tính biên, tức là cách nhau đúng GAMMA là được, không cần <= GAMMA -1 
     if len(list_closer_sensors) > 0:
+
+        # check fix sensor , lần đầu chạy thì chắc là không có rồi 
+        # nếu có thì lùi ra xa một đoạn cho bằng GAMMA 
         if contain_fix_sensor(list_closer_sensors):
-            closest_to_si_sensor = list_closer_sensors[-1]
+
+            closest_to_si_sensor = list_closer_sensors[-1]   # cần check xem cái nào gần nhất ? 
             while (sensor_si.coor3D.x - closest_to_si_sensor.coor3D.x < cf.GAMMA):
-                sensor_si.coor3D.x += cf.VELOCITY
+                sensor_si.coor3D.x += cf.VELOCITY    # cũng cách ra một đoạn bằng 1 
+
+        # else thi đứng yên 
     
-    if not sensor_si.VP.empty():
-        p0 = sensor_si.VP.queue[0]
-        if sensor_si.coor3D.x == p0.x:
-            broadcast_po_mess()
     
-    vacant_position_processing()
+    # if not sensor_si.VP.empty():
+    #     p0 = sensor_si.VP.queue[0]
+    #     if sensor_si.coor3D.x == p0.x:
+    #         broadcast_po_mess()
+    
+    # vacant_position_processing()
+
+
+    return sensor_si
     
 # list_demo = []
 # sensor_si = Sensor(Coordinate3D(17, 3, 4), 1)
