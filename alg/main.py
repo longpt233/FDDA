@@ -19,7 +19,6 @@ if __name__ == "__main__":
     
     # now all sensor are on centerlize 
     visualize3D_with_sensor(list_sensor_global, 'Algorithm 1: Initial Movement')
-
     # i =0 
     # while i < 2:
     #     i = i+1 
@@ -29,4 +28,5 @@ if __name__ == "__main__":
         sensor = vertical_move(sensor,list_ini_sensors)
 
     # visualize3D_with_sensor(list_sensor_global, 'Algorithm 2: Initial Movement')
+    plt.show()
 
