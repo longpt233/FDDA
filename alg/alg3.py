@@ -13,19 +13,19 @@ def vacant_position_processing(sensor_si):
         broadcast_vp_mess()         # quảng bá tất cả những thằng xung quanh vi trí trống mà nó biết  
         receive_po_mess()           # nhân lại sự xác định vị trí trống của ai đó quảng bá ở bước 2 
         vp_possition = receive_vp_mess()   # trả về 1 Coordinate3D do thằng khác trả về trongg 1 lần, vì là trong while lên trong môt khoảng thời gian nó có nhân nhiều lần 1 tọa độ này 
-        if (sensor_si.VP.empty()):    # nếu nó đang không biết bất cứ vị trí trống nào
-           
-            sensor_si.VP.put(vp_possition)   #  add vào hàng đơi VP của si vi trí trống nó nhân được
+        
+        
+        if (sensor_si.VP.empty()):    # nếu nó đang không biết bất cứ vị trí trống nào   
+            sensor_si.VP.put(vp_possition)   #  add vào hàng đơi VP của si vi trí trống nó nhân được        
         else:    # nếu mà hàng đợi của si không rỗng (nó  biết vị trí trống )
             x_min = sensor_si.VP[0]   # lay ra vi tri trống có x  nho nhat mà nó biết . cái VP này sẽ chứa tất cả các vị trí trống mà cùng 1 layyer (cùng x) (đọc code sẽ hiểu vì nó chỉ add thêm những vị trí trống cùng x )
 
+
         if  vp_possition.x ==  x_min :  # nếu vị trí trống mà nó biết bằng x với cái vị trí trống mà thằng khác quảng bá cho nó 
             sensor_si.VP.put(vp_possition)   # add thêm vị trí trống này vào VP của nó 
-
         elif vp_possition.x <  x_min :  # nếu vị trí trống mà nó nhận được gần base layer hơn những vị trí trống mà nó biết
             sensor_si.VP = None         # xóa VP 
             sensor_si.VP.put(vp_possition)  # add vị trí trống 
-
         else :
             # bỏ qua vp_possition này vì x của  vị trí trống đó xa hơn 
             pass
