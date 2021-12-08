@@ -6,7 +6,7 @@ class Sensor:
         self.coor3D = coor3D
         self.is_fixed = False
         self.id = id
-        self.VP = PriorityQueue()
+        self.VP = PriorityQueue()   # hàng đợi vị trí trống type :  Coordinate3D
 
     def __repr__(self):
         return f'Id={self.id}, Sensor({self.coor3D}, is_fixed={self.is_fixed}, closer_sensors={self.closer_sensors}, VP={[i for i in self.VP]})'

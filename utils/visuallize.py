@@ -15,10 +15,10 @@ def visualize3D_with_sensor(list_sensor, title=''):
     ax = fig.add_subplot(projection='3d')
     
     
-    ax.scatter(list_x, list_y, list_z,color = 'b',  marker='o', s=20)    # s for square
+    ax.scatter(list_x, list_y, list_z,color = 'b',  marker='o', s=20*20)    # s for square
     # ax.scatter(list_x, list_y, list_z,color = 'blue',  marker='o', s=40*40)
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     ax.set_zlabel('z')
     ax.set_title(title) 
-    plt.show()
+    # plt.show()

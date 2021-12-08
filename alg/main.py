@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 if __name__ == "__main__":
     list_sensor_global = gen_list_sensor()
 
-    visualize3D_with_sensor(list_sensor_global)
+    visualize3D_with_sensor(list_sensor_global, 'Init Sensor ')
  
     for sensor in list_sensor_global:
         init_move(sensor)
@@ -27,6 +27,6 @@ if __name__ == "__main__":
     for sensor in list_sensor_global:
         sensor = vertical_move(sensor,list_ini_sensors)
 
-    # visualize3D_with_sensor(list_sensor_global, 'Algorithm 2: Initial Movement')
+    visualize3D_with_sensor(list_sensor_global, 'Algorithm 2: Vertical Movement')
     plt.show()
 

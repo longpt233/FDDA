@@ -11,7 +11,7 @@ from alg.alg3 import vacant_position_processing
 
 
 # all sensor in one center line or all sensor in space
-list_ini_sensors = gen_list_sensor()
+# list_ini_sensors = gen_list_sensor()
 
 
 def contain_fix_sensor(list_sensor):
@@ -81,25 +81,12 @@ def vertical_move(sensor_si, list_ini_sensors):
         # else thi đứng yên 
     
     
-    # if not sensor_si.VP.empty():
+    # if not sensor_si.VP.empty():  # nếu mà hàng đợi vị trí trống của nó khogn rỗng 
     #     p0 = sensor_si.VP.queue[0]
-    #     if sensor_si.coor3D.x == p0.x:
-    #         broadcast_po_mess()
+    #     if sensor_si.coor3D.x == p0.x:    # t đang ở cùng layer với môt vị trí trống 
+    #         broadcast_po_mess()           # quảng bá cho bon khác biết là nó đang nằm cùng layer với VP của nó ( nó có xu hướng dich chuyển tới base tới khi cùng layer tới vị trí trống sẽ quảng bá cái po )
     
-    # vacant_position_processing()
-
+    # call thuật toán 3 
+    # vacant_position_processing(sensor_si)
 
     return sensor_si
-    
-# list_demo = []
-# sensor_si = Sensor(Coordinate3D(17, 3, 4), 1)
-# for i in range(1, 5):
-#     x = int(input("x = "))
-#     y = int(input("y = "))
-#     z = int(input("z = "))
-#     s = Sensor(Coordinate3D(x, y, z), i)
-#     s.VP.put(5)
-#     list_demo.append(s)
-# a = get_same_centerline_sensors(list_demo, sensor_si)
-# b = update_closer_sensors(a, sensor_si)
-# print(b)
