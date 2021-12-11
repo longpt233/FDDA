@@ -17,16 +17,13 @@ if __name__ == "__main__":
     for sensor in list_sensor_global:
         init_move(sensor)
     
-    # now all sensor are on centerlize 
+    # # now all sensor are on centerlize 
     visualize3D_with_sensor(list_sensor_global, 'Algorithm 1: Initial Movement')
-    # i =0 
-    # while i < 2:
-    #     i = i+1 
-    list_ini_sensors  = list_sensor_global.copy()
+
 
     for sensor in list_sensor_global:
-        sensor = vertical_move(sensor,list_ini_sensors)
+        vertical_move(sensor,list_sensor_global)
 
     visualize3D_with_sensor(list_sensor_global, 'Algorithm 2: Vertical Movement')
-    plt.show()
+    # plt.show()
 

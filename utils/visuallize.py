@@ -21,4 +21,4 @@ def visualize3D_with_sensor(list_sensor, title=''):
     ax.set_ylabel('y')
     ax.set_zlabel('z')
     ax.set_title(title) 
-    # plt.show()
+    plt.show()

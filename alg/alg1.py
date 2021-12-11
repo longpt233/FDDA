@@ -62,7 +62,7 @@ def init_move(sensor):
 
     # call alg2 here
 
-    return sensor
+    # return sensor
 
 
 if __name__ == "__main__":

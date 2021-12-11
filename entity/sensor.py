@@ -9,7 +9,7 @@ class Sensor:
         self.VP = PriorityQueue()   # hàng đợi vị trí trống type :  Coordinate3D
 
     def __repr__(self):
-        return f'Id={self.id}, Sensor({self.coor3D}, is_fixed={self.is_fixed}, closer_sensors={self.closer_sensors}, VP={[i for i in self.VP]})'
+        return f'Id={self.id}, Sensor({self.coor3D}, is_fixed={self.is_fixed}, VP={[i for i in self.VP]})'
 
     def move_to(self, new_pos):
         self.coor3D = new_pos

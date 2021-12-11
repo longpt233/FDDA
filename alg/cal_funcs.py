@@ -36,3 +36,6 @@ def f_z(h, r, j, is_odd):
         return h - (r * SQRT3) / 2 - j * r * SQRT3
     else:
         return h - j * r * SQRT3
+
+def f_s(w, h, r):
+    return f_o(h, r) * math.ceil(f_c(w, r) / 2) + f_e(h, r) * math.floor(f_c(w, r) / 2)
