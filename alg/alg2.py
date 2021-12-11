@@ -83,12 +83,14 @@ def vertical_move(sensor_si, list_sensors_after_init_move):
         # else thi đứng yên 
     
     
-    # if not sensor_si.VP.empty():  # nếu mà hàng đợi vị trí trống của nó khogn rỗng 
-    #     p0 = sensor_si.VP.queue[0]
-    #     if sensor_si.coor3D.x == p0.x:    # t đang ở cùng layer với môt vị trí trống 
-    #         broadcast_po_mess()           # quảng bá cho bon khác biết là nó đang nằm cùng layer với VP của nó ( nó có xu hướng dich chuyển tới base tới khi cùng layer tới vị trí trống sẽ quảng bá cái po )
-    
+    if not sensor_si.VP.empty():  # nếu mà hàng đợi vị trí trống của nó khogn rỗng 
+        p0 = sensor_si.VP.queue[0]
+        if sensor_si.coor3D.x == p0.x:    # t đang ở cùng layer với môt vị trí trống 
+            broadcast_po_mess(sensor_si, p0)           # quảng bá cho bon khác biết là nó đang nằm cùng layer với VP của nó ( nó có xu hướng dich chuyển tới base tới khi cùng layer tới vị trí trống sẽ quảng bá cái po )
+            # for i in range(cf.MAX_LAYERS):
+            #     if (cf.LAYERS[i].list_VP[0].x == sensor_si.coor3D.x):
+            #         cf.LAYERS[i].list_VP.remove(sensor_si.coor3D)
     # call thuật toán 3 
-    # vacant_position_processing(sensor_si)
+    vacant_position_processing(sensor_si)
 
     return sensor_si

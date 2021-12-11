@@ -1,4 +1,6 @@
 import math
+
+from entity.coordinate import Coordinate2D
 SQRT3 = math.sqrt(3)
 
 
@@ -39,3 +41,24 @@ def f_z(h, r, j, is_odd):
 
 def f_s(w, h, r):
     return f_o(h, r) * math.ceil(f_c(w, r) / 2) + f_e(h, r) * math.floor(f_c(w, r) / 2)
+
+def get_hexagon_center_points(w, h, r):
+    list_hcp = []
+
+    num_col = f_c(w, r)
+    num_odd_row = f_o(h, r)
+    num_even_row = f_e(h, r)
+
+    for col_index in range(num_col):
+        y = f_y(w, r, col_index)
+
+        if col_index % 2 == 1:
+            for row_index in range(num_odd_row):
+                z = f_z(h, r, row_index, is_odd=True)
+                list_hcp.append(Coordinate2D(y, z))
+        else:
+            for row_index in range(num_even_row):
+                z = f_z(h, r, row_index, is_odd=False)
+                list_hcp.append(Coordinate2D(y, z))
+
+    return list_hcp
