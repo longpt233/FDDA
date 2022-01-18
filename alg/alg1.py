@@ -4,12 +4,9 @@ sys.path.append('.')
 import numpy as np
 from entity.coordinate import Coordinate3D, Coordinate2D
 import config.config as cf
-from utils.visuallize import visualize2D
+from utils.visuallize import show_hcp, visualize2D
 from cal_funcs import f_c, f_e, f_o, f_y, f_z, get_hexagon_center_points
 
-
-def show_hcp():
-    visualize2D(cf.LIST_HCP)
 
 
 def get_distance_2D(coor2D_a, coor2D_b):
@@ -33,8 +30,7 @@ def init_move(sensor):
 
     sensor.move_to(Coordinate3D(x_sensor, p_target.x, p_target.y))
 
-
-if __name__ == "__main__":
-    show_hcp()
-    # a = get_hexagon_center_points(cf.WIDTH, cf.HEIGHT, cf.RADIUS)
-    # print(a)
+# if __name__ == "__main__":
+#     show_hcp(cf.LIST_HCP)
+#     a = get_hexagon_center_points(cf.WIDTH, cf.HEIGHT, cf.RADIUS)
+#     print(a)

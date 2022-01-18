@@ -1,5 +1,6 @@
 import math
-from typing import List 
+import sys
+sys.path.append(".")
 from alg.cal_funcs import f_s, get_hexagon_center_points
 from entity.coordinate import Coordinate3D
 from entity.layer import Layer
@@ -7,7 +8,7 @@ from entity.layer import Layer
 
 WIDTH = 50
 HEIGHT = 50
-LENGTH = 50
+LENGTH = 100
 # WIDTH = 4000
 # HEIGHT = 3800
 # LENGTH = 4200
@@ -28,12 +29,19 @@ T_SLEEP = None      # in algorithm 3,4
 T_MD = None             # in algorithm 3 when s_i is fixed sensor
 T_RCV = 10          # mess receiving time in alg3
 MIN_SENSOR_PER_LAYER = f_s(WIDTH, HEIGHT, RADIUS)
-MAX_LAYERS = math.floor(NUM_OF_SENSOR / MIN_SENSOR_PER_LAYER)
-
+MAX_LAYERS_BY_SENSOR = math.floor(NUM_OF_SENSOR / MIN_SENSOR_PER_LAYER)
+MAX_LAYERS_BY_LENGTH = math.floor(LENGTH / GAMMA)
+MAX_LAYERS = min(MAX_LAYERS_BY_LENGTH, MAX_LAYERS_BY_SENSOR)
 LIST_HCP = get_hexagon_center_points(WIDTH, HEIGHT, RADIUS)
-LAYERS = [Layer(0, i+1) for i in range(MAX_LAYERS)]
+LAYERS = [Layer(0, i+1) for i in range(MAX_LAYERS + 1)]
 
-for i in range(MAX_LAYERS):
+for i in range(MAX_LAYERS + 1):
     for j in range(MIN_SENSOR_PER_LAYER):
-        LAYERS[i].list_VP.append(Coordinate3D(i*GAMMA, LIST_HCP[j].x, LIST_HCP[j].y))
+        LAYERS[i].list_VP.append([i*GAMMA, LIST_HCP[j].x, LIST_HCP[j].y])
 
+# print(MAX_LAYERS)
+# print(MAX_LAYERS_BY_SENSOR)
+# print(MAX_LAYERS_BY_LENGTH)
+# print(MIN_SENSOR_PER_LAYER)
+# print(LAYERS)
+# print(MAX_LAYERS*MIN_SENSOR_PER_LAYER)

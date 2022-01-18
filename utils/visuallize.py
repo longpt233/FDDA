@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-
+import config.config as cf 
 
 def visualize2D(list_coor, title=''):
     list_coor = list(map(lambda coor: coor.to_list(), list_coor))
@@ -11,7 +11,7 @@ def visualize2D(list_coor, title=''):
 def visualize3D_with_sensor(list_sensor, title=''):
     list_coor = list(map(lambda sensor: sensor.coor3D.to_list(), list_sensor))
     list_x, list_y, list_z = tuple(zip(*list_coor))
-    fig = plt.figure()
+    fig = plt.figure(figsize=(cf.WIDTH*2, cf.HEIGHT*2))
     ax = fig.add_subplot(projection='3d')
     
     
@@ -22,3 +22,6 @@ def visualize3D_with_sensor(list_sensor, title=''):
     ax.set_zlabel('z')
     ax.set_title(title) 
     plt.show()
+
+def show_hcp(list_hcp):
+    visualize2D(list_hcp)

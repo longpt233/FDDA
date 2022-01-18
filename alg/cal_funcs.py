@@ -1,6 +1,6 @@
 import math
 
-from entity.coordinate import Coordinate2D
+from entity.coordinate import Coordinate2D, Coordinate3D
 SQRT3 = math.sqrt(3)
 
 
@@ -62,3 +62,16 @@ def get_hexagon_center_points(w, h, r):
                 list_hcp.append(Coordinate2D(y, z))
 
     return list_hcp
+
+def distance3D(a, b):
+    x1, y1, z1 = a[0], a[1], a[2]
+    x2, y2, z2 = b[0], b[1], b[2]
+    d = math.sqrt(math.pow(x2 - x1, 2) +
+                math.pow(y2 - y1, 2) +
+                math.pow(z2 - z1, 2)* 1.0)
+        
+    return d
+
+a = [2, -5, 7]
+b = [3, 4, 5]
+# print(distance3D(a, b))
