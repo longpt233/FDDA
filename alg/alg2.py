@@ -1,14 +1,15 @@
+from os import XATTR_SIZE_MAX
 import sys
 sys.path.append('.')
-from alg.alg1 import get_hexagon_center_points
+# from alg.alg1 import get_hexagon_center_points
 import config.config as cf
 import math
 from entity.coordinate import Coordinate2D, Coordinate3D
 from entity.sensor import Sensor
-from utils.gen_data import gen_list_sensor
+# from utils.gen_data import gen_list_sensor
 from queue import PriorityQueue
 from alg.broadcast_n_rcv import broadcast_po_mess
-from alg.alg3 import vacant_position_processing
+# from alg.alg3 import vacant_position_processing
 
 
 # all sensor in one center line or all sensor in space
@@ -33,13 +34,20 @@ def get_same_centerline_sensors(list_sensor, sensor_si):
     '''
     # list_x_centerlined_sensors = []
     # list_x_centerlined_sensors_is_fixed = []
+    # print("Ok list sensor: ", list_sensor)
     same_centerlined_sensors = []
     x = sensor_si.coor3D.x
     y = sensor_si.coor3D.y
     z = sensor_si.coor3D.z 
     for sensor in list_sensor:
-        x_i, y_i, z_i, id_i = sensor.coor3D.x, sensor.coor3D.y, sensor.coor3D.z, sensor.id
-        if y_i == y and z_i == z and x_i != x:
+        x_i, y_i, z_i = sensor.coor3D.x, sensor.coor3D.y, sensor.coor3D.z
+        if y_i == y and z_i == z:
+            if x_i == x:
+                pass
+                # print("Oh my god!")
+                # print("Before: ", sensor)
+                # sensor.move_to(Coordinate3D(x_i+1, y_i, z_i))
+                # print("After: ", sensor)
             same_centerlined_sensors.append(sensor)
             # list_x_centerlined_sensors.append((x_i, id_i))
             # list_x_centerlined_sensors_is_fixed.append(sensor_si.is_fixed)
@@ -56,7 +64,7 @@ def update_closer_sensors(same_centerline_sensors, sensor_si):
     '''
     C_si = []
     for sensor in same_centerline_sensors:
-        if (abs(sensor_si.coor3D.x - sensor.coor3D.x) < cf.GAMMA and sensor_si.coor3D.x > sensor.coor3D.x):
+        if (abs(sensor_si.coor3D.x - sensor.coor3D.x) < cf.GAMMA and sensor_si.coor3D.x >= sensor.coor3D.x):
             C_si.append(sensor)
     return C_si
 
@@ -69,9 +77,11 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer):
 
     # lấy tất cả các sensor cùng senterlize 
     list_same_centerline_sensors = get_same_centerline_sensors(list_sensor, sensor_si)
-
+    print("\nSensor si:", sensor_si)
+    print("\nList same centerline:", list_same_centerline_sensors)
     # lọc ra những sensor gàn base hơn so với nó, tính theo GAMMA 
     list_closer_sensors = update_closer_sensors(list_same_centerline_sensors, sensor_si)
+    print("List closer sensors: ", list_closer_sensors)
     # sensor đó sẽ chuyển động đến khi gặp sensor khác hoặc base layer thì thôi
     while len(list_closer_sensors) == 0 and sensor_si.coor3D.x > 0:
         sensor_si.move_to(Coordinate3D(sensor_si.coor3D.x - cf.VELOCITY, y_sensor, z_sensor))      # chuyển động với một khoảng bằng vận tốc (lấy là 1 - đơn vị )
@@ -110,6 +120,10 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer):
         # check fix sensor , lần đầu chạy thì chắc là không có rồi 
         # nếu có thì lùi ra xa một đoạn cho bằng GAMMA 
         # print("List closer sensors: ", list_closer_sensors)
+        closer_sensor_list_coor = [sensor.coor3D.to_list() for sensor in list_closer_sensors]
+        if sensor_si.coor3D.to_list() in closer_sensor_list_coor:
+            print("God damn it!")
+            sensor_si.move_to(Coordinate3D(x_sensor + 1, y_sensor, z_sensor))
         if contain_fix_sensor(list_closer_sensors):
             # print("Have fixed sensor!")
             closest_to_si_sensor = list_closer_sensors[-1]   # cần check xem cái nào gần nhất ? 
