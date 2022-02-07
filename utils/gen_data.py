@@ -14,7 +14,7 @@ def gen_list_sensor():
     )
     sensors_len = len(list_x)
     list_sensor = [
-        Sensor(Coordinate3D(*coor3D), id, False)
+        Sensor(Coordinate3D(*coor3D), id, False, 0)
         for coor3D, id in zip(
             zip(list_x, list_y, list_z), range(1, sensors_len + 1)
         )

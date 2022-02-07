@@ -13,7 +13,7 @@ def get_distance_2D(coor2D_a, coor2D_b):
     return np.linalg.norm((coor2D_a.x - coor2D_b.x, coor2D_a.y - coor2D_b.y))
 
 
-def init_move(sensor, list_coor_sensor):
+def init_move(sensor, list_coor_sensor, path):
     # get corr2D of sensor
     global p_target
     x_sensor = sensor.coor3D.x
@@ -29,7 +29,12 @@ def init_move(sensor, list_coor_sensor):
             p_target = hcp
     if not [x_sensor, p_target.x, p_target.y] in list_coor_sensor: 
         list_coor_sensor.append([x_sensor, p_target.x, p_target.y])
+        path += sensor.count_path([x_sensor, p_target.x, p_target.y])
+        sensor.set_path([x_sensor, p_target.x, p_target.y])
         sensor.move_to(Coordinate3D(x_sensor, p_target.x, p_target.y))
+        # print([x_sensor, y_sensor, z_sensor])
+        # print([sensor.coor3D.x, sensor.coor3D.y, sensor.coor3D.z])
+        # print(path)
     else:
         # print(sensor.coor3D)
         # print("Oh no!", sensor.coor3D.to_list())
@@ -39,10 +44,11 @@ def init_move(sensor, list_coor_sensor):
                 break
             k += 1
         list_coor_sensor.append([x_sensor+k, p_target.x, p_target.y])
+        path += sensor.count_path([x_sensor+k, p_target.x, p_target.y])
+        sensor.set_path([x_sensor+k, p_target.x, p_target.y])
         sensor.move_to(Coordinate3D(x_sensor+k, p_target.x, p_target.y))
         # print("yes", sensor.coor3D.to_list())
-    
-
+    return path
 # if __name__ == "__main__":
 #     show_hcp(cf.LIST_HCP)
 #     a = get_hexagon_center_points(cf.WIDTH, cf.HEIGHT, cf.RADIUS)

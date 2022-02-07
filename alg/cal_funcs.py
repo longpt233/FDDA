@@ -1,6 +1,7 @@
 import math
 
 from entity.coordinate import Coordinate2D, Coordinate3D
+from entity.sensor import Sensor
 SQRT3 = math.sqrt(3)
 
 
@@ -72,6 +73,9 @@ def distance3D(a, b):
         
     return d
 
-a = [2, -5, 7]
-b = [3, 4, 5]
+# a = [2, -5, 7]
+# b = [3, 4, 5]
 # print(distance3D(a, b))
+# a = Sensor(Coordinate3D(1, 2, 3), 1, False)
+# b = Sensor(Coordinate3D(2, 3, 4), 2, False)
+# print(a.move_to(Coordinate3D(2, 3, 4)))

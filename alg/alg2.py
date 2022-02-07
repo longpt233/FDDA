@@ -1,4 +1,3 @@
-from os import XATTR_SIZE_MAX
 import sys
 sys.path.append('.')
 # from alg.alg1 import get_hexagon_center_points
@@ -69,7 +68,7 @@ def update_closer_sensors(same_centerline_sensors, sensor_si):
     return C_si
 
 
-def vertical_move(sensor_si, list_sensor, count, curr_layer):
+def vertical_move(sensor_si, list_sensor, count, curr_layer, path):
 
     x_sensor = sensor_si.coor3D.x
     y_sensor = sensor_si.coor3D.y
@@ -77,13 +76,15 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer):
 
     # lấy tất cả các sensor cùng senterlize 
     list_same_centerline_sensors = get_same_centerline_sensors(list_sensor, sensor_si)
-    print("\nSensor si:", sensor_si)
-    print("\nList same centerline:", list_same_centerline_sensors)
+    # print("\nSensor si:", sensor_si)
+    # print("\nList same centerline:", list_same_centerline_sensors)
     # lọc ra những sensor gàn base hơn so với nó, tính theo GAMMA 
     list_closer_sensors = update_closer_sensors(list_same_centerline_sensors, sensor_si)
-    print("List closer sensors: ", list_closer_sensors)
+    # print("List closer sensors: ", list_closer_sensors)
     # sensor đó sẽ chuyển động đến khi gặp sensor khác hoặc base layer thì thôi
     while len(list_closer_sensors) == 0 and sensor_si.coor3D.x > 0:
+        path += sensor_si.count_path([sensor_si.coor3D.x - cf.VELOCITY, y_sensor, z_sensor])
+        sensor_si.set_path([sensor_si.coor3D.x - cf.VELOCITY, y_sensor, z_sensor])
         sensor_si.move_to(Coordinate3D(sensor_si.coor3D.x - cf.VELOCITY, y_sensor, z_sensor))      # chuyển động với một khoảng bằng vận tốc (lấy là 1 - đơn vị )
         list_closer_sensors = update_closer_sensors(list_same_centerline_sensors, sensor_si) # lúc nào cũng phải update lại mỗi khi di chuyển được V m. 
         # có thể đặt biến tính time chuyển động ở đây 
@@ -109,7 +110,7 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer):
             cf.LAYERS[curr_layer-1].set_flag(2) 
             curr_layer += 1
             count -= 1 # phải đặt count và curr_layer ở trong if thì mới ổn. 
-        return sensor_si, curr_layer, count
+        return sensor_si, curr_layer, count, path
         # time = sensor_si_x / velocity 
 
     # nếu nó gặp một sensor trước nó 
@@ -122,13 +123,17 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer):
         # print("List closer sensors: ", list_closer_sensors)
         closer_sensor_list_coor = [sensor.coor3D.to_list() for sensor in list_closer_sensors]
         if sensor_si.coor3D.to_list() in closer_sensor_list_coor:
-            print("God damn it!")
+            # print("God damn it!")
+            path += sensor_si.count_path([x_sensor + 1, y_sensor, z_sensor])
+            sensor_si.set_path([x_sensor + 1, y_sensor, z_sensor])
             sensor_si.move_to(Coordinate3D(x_sensor + 1, y_sensor, z_sensor))
         if contain_fix_sensor(list_closer_sensors):
             # print("Have fixed sensor!")
             closest_to_si_sensor = list_closer_sensors[-1]   # cần check xem cái nào gần nhất ? 
             # print("Closest to sensor si : ", closest_to_si_sensor.coor3D)
             if (sensor_si.coor3D.x - closest_to_si_sensor.coor3D.x < cf.GAMMA):
+                path += sensor_si.count_path([closest_to_si_sensor.coor3D.x + cf.GAMMA, y_sensor, z_sensor])
+                sensor_si.set_path([closest_to_si_sensor.coor3D.x + cf.GAMMA, y_sensor, z_sensor])
                 sensor_si.move_to(Coordinate3D(closest_to_si_sensor.coor3D.x + cf.GAMMA, y_sensor, z_sensor))
                 # time = cf.Gamma / velocity
         # print("Sensor move backward base layer: ", sensor_si.coor3D)
@@ -165,7 +170,7 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer):
     # if (is_done):
     #     print("Hoan thanh chuowng trinh!")
     #     visualize3D_with_sensor(list_sensors_after_init_move)
-    return sensor_si, curr_layer, count
+    return sensor_si, curr_layer, count, path
 
 
 
