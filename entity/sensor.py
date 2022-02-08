@@ -27,6 +27,4 @@ class Sensor:
         self.path += math.sqrt((self.coor3D.x - x)**2 + (self.coor3D.y - y)**2 + (self.coor3D.z - z)**2)
     def count_path(self, new_pos):
         x, y, z = new_pos
-        # print(x, y, z)
-        # print(math.sqrt((self.coor3D.x - x)**2 + (self.coor3D.y - y)**2 + (self.coor3D.z - z)**2))
         return math.sqrt((self.coor3D.x - x)**2 + (self.coor3D.y - y)**2 + (self.coor3D.z - z)**2)

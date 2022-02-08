@@ -1,18 +1,8 @@
 import sys
 sys.path.append('.')
-# from alg.alg1 import get_hexagon_center_points
 import config.config as cf
-import math
-from entity.coordinate import Coordinate2D, Coordinate3D
-from entity.sensor import Sensor
-# from utils.gen_data import gen_list_sensor
-from queue import PriorityQueue
+from entity.coordinate import  Coordinate3D
 from alg.broadcast_n_rcv import broadcast_po_mess
-# from alg.alg3 import vacant_position_processing
-
-
-# all sensor in one center line or all sensor in space
-# list_ini_sensors = gen_list_sensor()
 
 
 def contain_fix_sensor(list_sensor):

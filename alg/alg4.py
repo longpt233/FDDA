@@ -25,7 +25,6 @@ def parallel_move(sensor_si, list_sensor, list_coor_sensor, path):
 
     # Trường hợp này là sau khi xét toàn bộ chúng nó rồi mà không có thằng nào gần vị trí trống tối ưu hơn so với sensor si
     if [sensor_si.coor3D.x, optimal_VP_si[1], optimal_VP_si[2]] in list_coor_sensor:
-        # print("A ha!")
         k = 1
         while True:
             if [sensor_si.coor3D.x + k, optimal_VP_si[1], optimal_VP_si[2]] in list_coor_sensor:

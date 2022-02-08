@@ -4,9 +4,6 @@ sys.path.append('.')
 import numpy as np
 from entity.coordinate import Coordinate3D, Coordinate2D
 import config.config as cf
-# from utils.visuallize import show_hcp, visualize2D
-# from cal_funcs import f_c, f_e, f_o, f_y, f_z, get_hexagon_center_points
-
 
 
 def get_distance_2D(coor2D_a, coor2D_b):
@@ -14,13 +11,11 @@ def get_distance_2D(coor2D_a, coor2D_b):
 
 
 def init_move(sensor, list_coor_sensor, path):
-    # get corr2D of sensor
     global p_target
     x_sensor = sensor.coor3D.x
     y_sensor = sensor.coor3D.y
     z_sensor = sensor.coor3D.z
     coor2d_sensor = Coordinate2D(y_sensor, z_sensor)
-    # hexagonnNum = len(cf.LIST_HCP)
     d_min = 2 * cf.LENGTH
     for hcp in cf.LIST_HCP:
         d_tmp = get_distance_2D(hcp, coor2d_sensor)
@@ -32,12 +27,7 @@ def init_move(sensor, list_coor_sensor, path):
         path += sensor.count_path([x_sensor, p_target.x, p_target.y])
         sensor.set_path([x_sensor, p_target.x, p_target.y])
         sensor.move_to(Coordinate3D(x_sensor, p_target.x, p_target.y))
-        # print([x_sensor, y_sensor, z_sensor])
-        # print([sensor.coor3D.x, sensor.coor3D.y, sensor.coor3D.z])
-        # print(path)
     else:
-        # print(sensor.coor3D)
-        # print("Oh no!", sensor.coor3D.to_list())
         k = 1
         while True:
             if not [x_sensor + k, p_target.x, p_target.y] in list_coor_sensor:
@@ -47,9 +37,4 @@ def init_move(sensor, list_coor_sensor, path):
         path += sensor.count_path([x_sensor+k, p_target.x, p_target.y])
         sensor.set_path([x_sensor+k, p_target.x, p_target.y])
         sensor.move_to(Coordinate3D(x_sensor+k, p_target.x, p_target.y))
-        # print("yes", sensor.coor3D.to_list())
     return path
-# if __name__ == "__main__":
-#     show_hcp(cf.LIST_HCP)
-#     a = get_hexagon_center_points(cf.WIDTH, cf.HEIGHT, cf.RADIUS)
-#     print(a)
