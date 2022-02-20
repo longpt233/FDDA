@@ -21,3 +21,15 @@ def gen_list_sensor():
     ]
 
     return list_sensor
+
+list_sensor_sample = gen_list_sensor()
+num_of_sensor = cf.NUM_OF_SENSOR
+while True: 
+    if num_of_sensor < 100: 
+        break
+    with open("data/sample/sample" + str(num_of_sensor) + ".txt", "w") as f: 
+        for index in range(0, num_of_sensor):
+            sensor = list_sensor_sample[index]
+            line = str(sensor.id )+ "-" + str(sensor.coor3D.to_list()) + '\n'
+            f.write(line)
+    num_of_sensor -= 100

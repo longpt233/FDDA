@@ -58,7 +58,7 @@ def update_closer_sensors(same_centerline_sensors, sensor_si):
     return C_si
 
 
-def vertical_move(sensor_si, list_sensor, count, curr_layer, path):
+def vertical_move(sensor_si, list_sensor, count, curr_layer, path, layers):
 
     x_sensor = sensor_si.coor3D.x
     y_sensor = sensor_si.coor3D.y
@@ -87,17 +87,17 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer, path):
         sensor_si.set_fixed(True) # ban đầu chỉ đặt là sensor_si.fixed = True. Như này thì sẽ không thay đổi được giá trị bên trong sensor
         # Bắt buộc phải đổi lại trong lớp sensor (mất cả buổi đề fixed mỗi cái lỗi này thôi ấy. Khó đcđ) 
         # sensor_si.move_to(Coordinate3D(0, y_sensor, z_sensor))
-        sensor_si_coor3D_list = [sensor_si.coor3D.x, sensor_si.coor3D.y, sensor_si.coor3D.z] # đổi tọa độ sensor về dạng list để tương thích với cf.LAYERS 
-        if (len(cf.LAYERS[curr_layer-1].list_VP) > 1):
-            if  sensor_si_coor3D_list in cf.LAYERS[curr_layer - 1].list_VP:
-                cf.LAYERS[curr_layer - 1].list_VP.remove(sensor_si_coor3D_list)
+        sensor_si_coor3D_list = [sensor_si.coor3D.x, sensor_si.coor3D.y, sensor_si.coor3D.z] # đổi tọa độ sensor về dạng list để tương thích với layers 
+        if (len(layers[curr_layer-1].list_VP) > 1):
+            if  sensor_si_coor3D_list in layers[curr_layer - 1].list_VP:
+                layers[curr_layer - 1].list_VP.remove(sensor_si_coor3D_list)
                 count -= 1 # count phải bỏ vào bên trong này. Ban đầu để ngoài thì bị lỗi (do nó ko cover được hết case) 
             # else: 
                 # sensor_si.move_to(Coordinate3D(sensor_si.coor3D.x + cf.VELOCITY, y_sensor, z_sensor))
                 
-        elif (len(cf.LAYERS[curr_layer-1].list_VP) == 1): #còn mỗi 1 vị trí trống thì set nó rỗng thôi cho dễ 
-            cf.LAYERS[curr_layer-1].list_VP = []
-            cf.LAYERS[curr_layer-1].set_flag(2) 
+        elif (len(layers[curr_layer-1].list_VP) == 1): #còn mỗi 1 vị trí trống thì set nó rỗng thôi cho dễ 
+            layers[curr_layer-1].list_VP = []
+            layers[curr_layer-1].set_flag(2) 
             curr_layer += 1
             count -= 1 # phải đặt count và curr_layer ở trong if thì mới ổn. 
         return sensor_si, curr_layer, count, path
@@ -135,18 +135,18 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer, path):
         # print("List VP of sensor si after all: ", sensor_si.VP)
         if sensor_si.coor3D.x == p0[0]:    # t đang ở cùng layer với môt vị trí trống 
             broadcast_po_mess(sensor_si)        # quảng bá cho bon khác biết là nó đang nằm cùng layer với VP của nó ( nó có xu hướng dich chuyển tới base tới khi cùng layer tới vị trí trống sẽ quảng bá cái po)
-            # print("List VP of LAYERS after all: ", cf.LAYERS[curr_layer - 1].list_VP)
+            # print("List VP layers after all: ", layers[curr_layer - 1].list_VP)
             sensor_si_coor3D_list = [sensor_si.coor3D.x, sensor_si.coor3D.y, sensor_si.coor3D.z]
-            if (len(cf.LAYERS[curr_layer-1].list_VP) > 1):
-                if  sensor_si_coor3D_list in cf.LAYERS[curr_layer - 1].list_VP:
-                    cf.LAYERS[curr_layer - 1].list_VP.remove(sensor_si_coor3D_list)
+            if (len(layers[curr_layer-1].list_VP) > 1):
+                if  sensor_si_coor3D_list in layers[curr_layer - 1].list_VP:
+                    layers[curr_layer - 1].list_VP.remove(sensor_si_coor3D_list)
                     count -= 1
                     sensor_si.set_fixed(True)
                 # else: 
                 #     sensor_si.move_to(Coordinate3D(sensor_si.coor3D.x + cf.VELOCITY, y_sensor, z_sensor))
-            elif (len(cf.LAYERS[curr_layer-1].list_VP) == 1):
-                cf.LAYERS[curr_layer-1].list_VP = []
-                cf.LAYERS[curr_layer-1].set_flag(2)
+            elif (len(layers[curr_layer-1].list_VP) == 1):
+                layers[curr_layer-1].list_VP = []
+                layers[curr_layer-1].set_flag(2)
                 curr_layer += 1
                 count -= 1
                 sensor_si.set_fixed(True)
@@ -154,7 +154,7 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer, path):
     # is_done = True # điều kiện dừng cho toàn bộ chương trình
     # nếu tất cả các layer đều ở trạng thái 2 => kết thúc toàn bộ các thuật toán. 
     # for i in range(cf.MAX_LAYERS):
-    #     if (cf.LAYERS[i].flag != 2):
+    #     if (layers[i].flag != 2):
     #         is_done = False
     #         break
     # if (is_done):

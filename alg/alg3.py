@@ -2,7 +2,7 @@ from alg.cal_funcs import distance3D
 import config.config as cf
 
 
-def vacant_position_processing(sensor_si, curr_layer):
+def vacant_position_processing(sensor_si, curr_layer, layers):
     '''
     Alg3: Phần này đã được sửa lại khá nhiều. 
     Không theo thuật toán chi tiết của họ nữa.
@@ -17,7 +17,7 @@ def vacant_position_processing(sensor_si, curr_layer):
         sensor_si_coor3D_list = [sensor_si.coor3D.x, sensor_si.coor3D.y, sensor_si.coor3D.z]
         # while(time.time() - t_start < cf.T_RCV):
         # phần này sẽ cố gắng lấy ra những vị trí trống trong cf.LAYERS để gán lại cho từng thằng sensor. 
-        temp_VP = cf.LAYERS[curr_layer - 1].list_VP  
+        temp_VP = layers[curr_layer - 1].list_VP  
         temp_dict_VP = {}
         for i in range(len(temp_VP)):
             temp_dict_VP[i] = temp_VP[i]

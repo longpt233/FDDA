@@ -24,12 +24,14 @@ def visualize3D_with_sensor(list_sensor, title=''):
         list_x, list_y, list_z = tuple(zip(*list_coor_not_fixed))
     if len(list_coor_fixed):
         list_x_fixed, list_y_fixed, list_z_fixed = tuple(zip(*list_coor_fixed))
-    fig = plt.figure(figsize=(cf.WIDTH*2, cf.HEIGHT*2))
+    px = 1/plt.rcParams['figure.dpi']
+    # fig = plt.figure(figsize=(cf.WIDTH*px, cf.HEIGHT*px))
+    fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
     if len(list_coor_not_fixed):
-        ax.scatter(list_x, list_y, list_z,color = 'b',  marker='o', s=20*20)
+        ax.scatter(list_x, list_y, list_z,color = 'b',  marker='o', s=5*5)
     if len(list_coor_fixed):
-        ax.scatter(list_x_fixed, list_y_fixed, list_z_fixed, color = 'r',  marker='o', s=15*15)    # s for square
+        ax.scatter(list_x_fixed, list_y_fixed, list_z_fixed, color = 'r',  marker='o', s=3*3)    # s for square
     # ax.scatter(list_x, list_y, list_z,color = 'blue',  marker='o', s=40*40)
     ax.set_xlabel('x')
     ax.set_ylabel('y')
