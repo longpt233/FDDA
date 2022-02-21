@@ -1,6 +1,6 @@
 import sys
 sys.path.append('.')
-import config.config as cf
+from configs.config import cfg
 from entity.coordinate import  Coordinate3D
 from alg.broadcast_n_rcv import broadcast_po_mess
 
@@ -53,7 +53,7 @@ def update_closer_sensors(same_centerline_sensors, sensor_si):
     '''
     C_si = []
     for sensor in same_centerline_sensors:
-        if (abs(sensor_si.coor3D.x - sensor.coor3D.x) < cf.GAMMA and sensor_si.coor3D.x >= sensor.coor3D.x):
+        if (abs(sensor_si.coor3D.x - sensor.coor3D.x) < cfg['GAMMA'] and sensor_si.coor3D.x >= sensor.coor3D.x):
             C_si.append(sensor)
     return C_si
 
@@ -73,16 +73,16 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer, path, layers):
     # print("List closer sensors: ", list_closer_sensors)
     # sensor đó sẽ chuyển động đến khi gặp sensor khác hoặc base layer thì thôi
     while len(list_closer_sensors) == 0 and sensor_si.coor3D.x > 0:
-        path += sensor_si.count_path([sensor_si.coor3D.x - cf.VELOCITY, y_sensor, z_sensor])
-        sensor_si.set_path([sensor_si.coor3D.x - cf.VELOCITY, y_sensor, z_sensor])
-        sensor_si.move_to(Coordinate3D(sensor_si.coor3D.x - cf.VELOCITY, y_sensor, z_sensor))      # chuyển động với một khoảng bằng vận tốc (lấy là 1 - đơn vị )
+        path += sensor_si.count_path([sensor_si.coor3D.x - cfg['VELOCITY'], y_sensor, z_sensor])
+        sensor_si.set_path([sensor_si.coor3D.x - cfg['VELOCITY'], y_sensor, z_sensor])
+        sensor_si.move_to(Coordinate3D(sensor_si.coor3D.x - cfg['VELOCITY'], y_sensor, z_sensor))      # chuyển động với một khoảng bằng vận tốc (lấy là 1 - đơn vị )
         list_closer_sensors = update_closer_sensors(list_same_centerline_sensors, sensor_si) # lúc nào cũng phải update lại mỗi khi di chuyển được V m. 
         # có thể đặt biến tính time chuyển động ở đây 
     # print("After moving to base layer: ", sensor_si.coor3D)
     # print("List closer sensor before: ", list_closer_sensors)
     # Phần này có tinh chỉnh lại: sau khi 1 số sensor đã tới được base layer, để xét các tầng tiếp theo thì phải là (curr_layer - 1) * Gamma
     # Đồng thời cũng cần phải để cho len nó bằng 0 vì khác không đã có đoạn bên dưới xử lí => nếu không thì toàn bug, fix rất mệt. 
-    if (sensor_si.coor3D.x == (curr_layer - 1)*cf.GAMMA and len(list_closer_sensors) == 0):
+    if (sensor_si.coor3D.x == (curr_layer - 1)*cfg['GAMMA'] and len(list_closer_sensors) == 0):
         # print("Sensor should be fixed")
         sensor_si.set_fixed(True) # ban đầu chỉ đặt là sensor_si.fixed = True. Như này thì sẽ không thay đổi được giá trị bên trong sensor
         # Bắt buộc phải đổi lại trong lớp sensor (mất cả buổi đề fixed mỗi cái lỗi này thôi ấy. Khó đcđ) 
@@ -93,7 +93,7 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer, path, layers):
                 layers[curr_layer - 1].list_VP.remove(sensor_si_coor3D_list)
                 count -= 1 # count phải bỏ vào bên trong này. Ban đầu để ngoài thì bị lỗi (do nó ko cover được hết case) 
             # else: 
-                # sensor_si.move_to(Coordinate3D(sensor_si.coor3D.x + cf.VELOCITY, y_sensor, z_sensor))
+                # sensor_si.move_to(Coordinate3D(sensor_si.coor3D.x + cfg['VELOCITY'], y_sensor, z_sensor))
                 
         elif (len(layers[curr_layer-1].list_VP) == 1): #còn mỗi 1 vị trí trống thì set nó rỗng thôi cho dễ 
             layers[curr_layer-1].list_VP = []
@@ -121,11 +121,11 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer, path, layers):
             # print("Have fixed sensor!")
             closest_to_si_sensor = list_closer_sensors[-1]   # cần check xem cái nào gần nhất ? 
             # print("Closest to sensor si : ", closest_to_si_sensor.coor3D)
-            if (sensor_si.coor3D.x - closest_to_si_sensor.coor3D.x < cf.GAMMA):
-                path += sensor_si.count_path([closest_to_si_sensor.coor3D.x + cf.GAMMA, y_sensor, z_sensor])
-                sensor_si.set_path([closest_to_si_sensor.coor3D.x + cf.GAMMA, y_sensor, z_sensor])
-                sensor_si.move_to(Coordinate3D(closest_to_si_sensor.coor3D.x + cf.GAMMA, y_sensor, z_sensor))
-                # time = cf.Gamma / velocity
+            if (sensor_si.coor3D.x - closest_to_si_sensor.coor3D.x < cfg['GAMMA']):
+                path += sensor_si.count_path([closest_to_si_sensor.coor3D.x + cfg['GAMMA'], y_sensor, z_sensor])
+                sensor_si.set_path([closest_to_si_sensor.coor3D.x + cfg['GAMMA'], y_sensor, z_sensor])
+                sensor_si.move_to(Coordinate3D(closest_to_si_sensor.coor3D.x + cfg['GAMMA'], y_sensor, z_sensor))
+                # time = cfg['Gamma'] / velocity
         # print("Sensor move backward base layer: ", sensor_si.coor3D)
         # else thi đứng while
     
@@ -143,7 +143,7 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer, path, layers):
                     count -= 1
                     sensor_si.set_fixed(True)
                 # else: 
-                #     sensor_si.move_to(Coordinate3D(sensor_si.coor3D.x + cf.VELOCITY, y_sensor, z_sensor))
+                #     sensor_si.move_to(Coordinate3D(sensor_si.coor3D.x + cfg['VELOCITY'], y_sensor, z_sensor))
             elif (len(layers[curr_layer-1].list_VP) == 1):
                 layers[curr_layer-1].list_VP = []
                 layers[curr_layer-1].set_flag(2)
@@ -153,7 +153,7 @@ def vertical_move(sensor_si, list_sensor, count, curr_layer, path, layers):
 
     # is_done = True # điều kiện dừng cho toàn bộ chương trình
     # nếu tất cả các layer đều ở trạng thái 2 => kết thúc toàn bộ các thuật toán. 
-    # for i in range(cf.MAX_LAYERS):
+    # for i in range(cfg['MAX_LAYERS']):
     #     if (layers[i].flag != 2):
     #         is_done = False
     #         break

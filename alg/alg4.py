@@ -1,6 +1,6 @@
 import sys
 from alg.cal_funcs import distance3D
-import config.config as cf
+import configs.config as cfg
 from broadcast_n_rcv import *
 from entity.coordinate import Coordinate3D
 
@@ -40,6 +40,3 @@ def parallel_move(sensor_si, list_sensor, list_coor_sensor, path):
         sensor_si.set_path([sensor_si.coor3D.x, optimal_VP_si[1], optimal_VP_si[2]])
         sensor_si.move_to(Coordinate3D(sensor_si.coor3D.x, optimal_VP_si[1], optimal_VP_si[2]))
     return sensor_si, list_sensor, path
-
-
-

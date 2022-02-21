@@ -1,5 +1,5 @@
 from alg.cal_funcs import distance3D
-import config.config as cf
+import configs.config as cfg
 
 
 def vacant_position_processing(sensor_si, curr_layer, layers):
@@ -15,8 +15,8 @@ def vacant_position_processing(sensor_si, curr_layer, layers):
         return sensor_si
     else:
         sensor_si_coor3D_list = [sensor_si.coor3D.x, sensor_si.coor3D.y, sensor_si.coor3D.z]
-        # while(time.time() - t_start < cf.T_RCV):
-        # phần này sẽ cố gắng lấy ra những vị trí trống trong cf.LAYERS để gán lại cho từng thằng sensor. 
+        # while(time.time() - t_start < cfg['T_RCV']:
+        # phần này sẽ cố gắng lấy ra những vị trí trống trong cfg['LAYERS'] để gán lại cho từng thằng sensor. 
         temp_VP = layers[curr_layer - 1].list_VP  
         temp_dict_VP = {}
         for i in range(len(temp_VP)):

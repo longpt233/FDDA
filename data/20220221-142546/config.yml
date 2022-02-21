@@ -1,0 +1,17 @@
+# Environment
+WIDTH: 4000
+HEIGHT: 3800
+LENGTH: 4200
+
+# Sensor
+RADIUS: 200
+NUM_SENSOR: 800
+VELOCITY: 1
+GAMMA: 380
+
+# Time constraints
+MINIMUM_TIME: 1
+T_CC: 0
+T_SLEEP: 0
+T_MD: 0
+T_RCV: 10
